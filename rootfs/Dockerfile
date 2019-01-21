@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-LABEL name="deis-go-dev"
+LABEL name="drycc-go-dev"
 
 ENV AZCLI_VERSION=2.0.46 \
     GO_VERSION=1.11.4 \
@@ -8,7 +8,7 @@ ENV AZCLI_VERSION=2.0.46 \
     GLIDE_HOME=/root \
     HELM_VERSION=v2.12.2 \
     KUBECTL_VERSION=v1.10.12 \
-    SHELLCHECK_VERSION=v0.4.6 \
+    SHELLCHECK_VERSION=v0.4.7 \
     ETCDCTL_VERSION=v3.1.8 \
     GOLANGCI_LINT_VERSION=v1.12.5 \
     PATH=$PATH:/usr/local/go/bin:/go/bin:/usr/local/bin/docker \
@@ -48,11 +48,15 @@ RUN \
     vim \
     wget \
     zip \
+  && wget https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
+    && xz -d shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
+    && tar -xvf shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar \
+    && cp shellcheck-${SHELLCHECK_VERSION}/shellcheck /usr/local/bin/ \
+    && chmod +x /usr/local/bin/shellcheck \
+    && rm -rf shellcheck-${SHELLCHECK_VERSION} shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar \
   && curl -L https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz | tar -C /usr/local -xz \
   && curl -sSL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz \
     | tar -vxz -C /usr/local/bin --strip=1 \
-  && curl -L https://deisbuildartifacts.blob.core.windows.net/shellcheck/shellcheck-${SHELLCHECK_VERSION}-linux-amd64 -o /usr/local/bin/shellcheck \
-  && chmod +x /usr/local/bin/shellcheck \
   && curl -L https://storage.googleapis.com/k8s-claimer/git-e4dcc16/k8s-claimer-git-e4dcc16-linux-amd64 -o /usr/local/bin/k8s-claimer \
 	&& chmod +x /usr/local/bin/k8s-claimer \
   && curl -sSL -o /tmp/protoc.zip https://github.com/google/protobuf/releases/download/v3.1.0/protoc-3.1.0-linux-x86_64.zip \

@@ -1,6 +1,6 @@
 VERSION := $(shell git describe --tags --exact-match 2>/dev/null || echo latest)
 REGISTRY ?= quay.io/
-IMAGE_PREFIX ?= deis
+IMAGE_PREFIX ?= drycc
 IMAGE := ${REGISTRY}${IMAGE_PREFIX}/go-dev:${VERSION}
 
 # scripts are checked *after* build, so use paths inside the container
