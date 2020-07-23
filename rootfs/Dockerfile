@@ -5,7 +5,7 @@ LABEL name="drycc-go-dev"
 ENV AZCLI_VERSION=2.9.1 \
     DOCKER_VERSION=18.09 \
     GO_VERSION=1.14.6 \
-    HELM_VERSION=v2.16.9 \
+    HELM_VERSION=v3.2.4 \
     KUBECTL_VERSION=v1.18.6 \
     SHELLCHECK_VERSION=v0.7.1 \
     ETCDCTL_VERSION=v3.4.10 \
@@ -35,10 +35,9 @@ RUN \
     netcat \
     openssh-client \
     procps \
-    python \
-    python-dev \
-    python-pip \
-    python-setuptools \
+    python3 \
+    python3-dev \
+    python3-pip \
     rsync \
     ruby \
     unzip \
@@ -56,9 +55,6 @@ RUN \
   && curl -L https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz | tar -C /usr/local -xz \
   && curl -L https://storage.googleapis.com/k8s-claimer/git-e4dcc16/k8s-claimer-git-e4dcc16-linux-amd64 -o /usr/local/bin/k8s-claimer \
 	&& chmod +x /usr/local/bin/k8s-claimer \
-  && curl -sSL -o /tmp/protoc.zip https://github.com/google/protobuf/releases/download/v3.1.0/protoc-3.1.0-linux-x86_64.zip \
-  && unzip /tmp/protoc.zip 'bin/protoc' -d /usr/local \
-  && rm /tmp/protoc.zip \
   && curl -sSL https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
   && mkdir -p $GOPATH/src/k8s.io/helm \
@@ -93,8 +89,8 @@ RUN \
   && ln -s ${GOPATH}/bin/gometalinter.v2 ${GOPATH}/bin/gometalinter \
   && gometalinter.v2 --install \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
-  && pip install --disable-pip-version-check --no-cache-dir azure-cli==${AZCLI_VERSION} shyaml \
-  && apt-get purge --auto-remove -y libffi-dev python-dev python-pip \
+  && pip3 install --disable-pip-version-check --no-cache-dir azure-cli==${AZCLI_VERSION} shyaml \
+  && apt-get purge --auto-remove -y libffi-dev python3-dev python3-pip \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man /usr/share/doc
