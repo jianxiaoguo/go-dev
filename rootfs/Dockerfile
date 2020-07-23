@@ -1,16 +1,15 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 LABEL name="drycc-go-dev"
 
-ENV AZCLI_VERSION=2.0.46 \
-    GO_VERSION=1.11.4 \
-    GLIDE_VERSION=v0.13.1 \
-    GLIDE_HOME=/root \
-    HELM_VERSION=v2.12.2 \
-    KUBECTL_VERSION=v1.10.12 \
-    SHELLCHECK_VERSION=v0.4.7 \
-    ETCDCTL_VERSION=v3.1.8 \
-    GOLANGCI_LINT_VERSION=v1.12.5 \
+ENV AZCLI_VERSION=2.9.1 \
+    DOCKER_VERSION=18.09 \
+    GO_VERSION=1.14.6 \
+    HELM_VERSION=v2.16.9 \
+    KUBECTL_VERSION=v1.18.6 \
+    SHELLCHECK_VERSION=v0.7.1 \
+    ETCDCTL_VERSION=v3.4.10 \
+    GOLANGCI_LINT_VERSION=v1.29.0 \
     PATH=$PATH:/usr/local/go/bin:/go/bin:/usr/local/bin/docker \
     GOPATH=/go
 
@@ -55,8 +54,6 @@ RUN \
     && chmod +x /usr/local/bin/shellcheck \
     && rm -rf shellcheck-${SHELLCHECK_VERSION} shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar \
   && curl -L https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz | tar -C /usr/local -xz \
-  && curl -sSL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz \
-    | tar -vxz -C /usr/local/bin --strip=1 \
   && curl -L https://storage.googleapis.com/k8s-claimer/git-e4dcc16/k8s-claimer-git-e4dcc16-linux-amd64 -o /usr/local/bin/k8s-claimer \
 	&& chmod +x /usr/local/bin/k8s-claimer \
   && curl -sSL -o /tmp/protoc.zip https://github.com/google/protobuf/releases/download/v3.1.0/protoc-3.1.0-linux-x86_64.zip \
@@ -71,12 +68,9 @@ RUN \
   && cp ./bin/* /usr/local/bin && cd && rm -rf $GOPATH/src/k8s.io/helm \
   && mkdir -p /go/bin \
   && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
-  && wget https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod/pool/main/a/azcopy/azcopy_7.2.0-netcore_ubuntu16.04_x64.deb \
-  && dpkg -i azcopy_7.2.0-netcore_ubuntu16.04_x64.deb || echo "missing dependencies" \
-  && rm -f azcopy_7.2.0-netcore_ubuntu16.04_x64.deb \
   && apt-get update && apt-get -f -y install \
-  && curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-17.05.0-ce.tgz \
-  && tar xzvf docker-17.05.0-ce.tgz -C /usr/local/bin \
+  && curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION-ce.tgz \
+  && tar xzvf docker-$DOCKER_VERSION-ce.tgz -C /usr/local/bin \
   && chmod +x -R /usr/local/bin/docker \
   && rm docker-17.05.0-ce.tgz \
   && curl -L https://github.com/coreos/etcd/releases/download/$ETCDCTL_VERSION/etcd-$ETCDCTL_VERSION-linux-amd64.tar.gz -o /tmp/etcd-$ETCDCTL_VERSION.tar.gz \
