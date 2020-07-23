@@ -5,7 +5,6 @@ LABEL name="drycc-go-dev"
 ENV AZCLI_VERSION=2.9.1 \
     DOCKER_VERSION=18.09 \
     GO_VERSION=1.14.6 \
-    HELM_VERSION=v3.2.4 \
     KUBECTL_VERSION=v1.18.6 \
     SHELLCHECK_VERSION=v0.7.1 \
     ETCDCTL_VERSION=v3.4.10 \
@@ -57,11 +56,6 @@ RUN \
 	&& chmod +x /usr/local/bin/k8s-claimer \
   && curl -sSL https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
-  && mkdir -p $GOPATH/src/k8s.io/helm \
-  && curl -sSL https://github.com/helm/helm/archive/$HELM_VERSION.tar.gz \
-    | tar -vxz -C $GOPATH/src/k8s.io/helm --strip=1 \
-  && cd $GOPATH/src/k8s.io/helm && make bootstrap build \
-  && cp ./bin/* /usr/local/bin && cd && rm -rf $GOPATH/src/k8s.io/helm \
   && mkdir -p /go/bin \
   && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
   && apt-get update && apt-get -f -y install \
