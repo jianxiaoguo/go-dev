@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 LABEL name="drycc-go-dev"
 
 ENV AZCLI_VERSION=2.9.1 \
-    DOCKER_VERSION=18.09 \
+    DOCKER_VERSION=19.03.9  \
     GO_VERSION=1.14.6 \
     KUBECTL_VERSION=v1.18.6 \
     SHELLCHECK_VERSION=v0.7.1 \
@@ -45,7 +45,7 @@ RUN \
     vim \
     wget \
     zip \
-  && wget https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
+  && wget https://github.com/koalaman/shellcheck/releases/download/$SHELLCHECK_VERSION/shellcheck-$SHELLCHECK_VERSION.linux.x86_64.tar.xz \
     && xz -d shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz \
     && tar -xvf shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar \
     && cp shellcheck-${SHELLCHECK_VERSION}/shellcheck /usr/local/bin/ \
@@ -57,12 +57,11 @@ RUN \
   && curl -sSL https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
   && mkdir -p /go/bin \
-  && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh \
   && apt-get update && apt-get -f -y install \
-  && curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION-ce.tgz \
-  && tar xzvf docker-$DOCKER_VERSION-ce.tgz -C /usr/local/bin \
+  && curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz \
+  && tar xzvf docker-$DOCKER_VERSION.tgz -C /usr/local/bin \
   && chmod +x -R /usr/local/bin/docker \
-  && rm docker-17.05.0-ce.tgz \
+  && rm docker-$DOCKER_VERSION.tgz \
   && curl -L https://github.com/coreos/etcd/releases/download/$ETCDCTL_VERSION/etcd-$ETCDCTL_VERSION-linux-amd64.tar.gz -o /tmp/etcd-$ETCDCTL_VERSION.tar.gz \
   && tar -C /tmp -xvzf /tmp/etcd-$ETCDCTL_VERSION.tar.gz --strip-components=1 etcd-$ETCDCTL_VERSION-linux-amd64/etcdctl \
   && mv /tmp/etcdctl /usr/local/bin/etcdctl \
