@@ -70,6 +70,7 @@ RUN \
     github.com/AlekSi/gocov-xml \
     github.com/axw/gocov/gocov \
     github.com/mitchellh/gox \
+    golang.org/x/lint \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
   && pip3 install --disable-pip-version-check --no-cache-dir azure-cli==${AZCLI_VERSION} shyaml \
   && apt-get purge --auto-remove -y libffi-dev python3-dev python3-pip \
