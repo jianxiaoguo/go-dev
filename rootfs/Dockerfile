@@ -52,8 +52,6 @@ RUN \
     && chmod +x /usr/local/bin/shellcheck \
     && rm -rf shellcheck-${SHELLCHECK_VERSION} shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar \
   && curl -L https://storage.googleapis.com/golang/go$GO_VERSION.linux-amd64.tar.gz | tar -C /usr/local -xz \
-  && curl -L https://storage.googleapis.com/k8s-claimer/git-e4dcc16/k8s-claimer-git-e4dcc16-linux-amd64 -o /usr/local/bin/k8s-claimer \
-	&& chmod +x /usr/local/bin/k8s-claimer \
   && curl -sSL https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
   && mkdir -p /go/bin \
@@ -66,21 +64,12 @@ RUN \
   && tar -C /tmp -xvzf /tmp/etcd-$ETCDCTL_VERSION.tar.gz --strip-components=1 etcd-$ETCDCTL_VERSION-linux-amd64/etcdctl \
   && mv /tmp/etcdctl /usr/local/bin/etcdctl \
   && rm /tmp/etcd-$ETCDCTL_VERSION.tar.gz \
+  && go env -w GO111MODULE=on \
+  && go env -w GOPROXY=https://goproxy.cn,direct \
   && go get -u -v \
     github.com/AlekSi/gocov-xml \
     github.com/axw/gocov/gocov \
-    github.com/constabulary/gb/... \
-    github.com/derekparker/delve/cmd/dlv \
-    github.com/dgrijalva/jwt-go/cmd/jwt \
-    github.com/golang/protobuf/protoc-gen-go \
-    github.com/haya14busa/goverage \
-    github.com/jteeuwen/go-bindata/... \
     github.com/mitchellh/gox \
-    github.com/onsi/ginkgo/ginkgo \
-    github.com/hashicorp/packer \
-    gopkg.in/alecthomas/gometalinter.v2 \
-  && ln -s ${GOPATH}/bin/gometalinter.v2 ${GOPATH}/bin/gometalinter \
-  && gometalinter.v2 --install \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
   && pip3 install --disable-pip-version-check --no-cache-dir azure-cli==${AZCLI_VERSION} shyaml \
   && apt-get purge --auto-remove -y libffi-dev python3-dev python3-pip \
