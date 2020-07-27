@@ -12,6 +12,7 @@ golangci-lint --disable-all \
   -E=vet \
   -E=gofmt \
   -E=golint \
+  --timeout=600s \
   run ./...
 
 exit $mandatory
