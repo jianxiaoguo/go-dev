@@ -1,7 +1,5 @@
 # drycc/go-dev
 
-[![Build Status](https://travis-ci.org/drycc/docker-go-dev.svg?branch=master)](https://travis-ci.org/drycc/docker-go-dev) [![Docker Repository on Quay](https://quay.io/repository/drycc/go-dev/status "Docker Repository on Quay")](https://quay.io/repository/drycc/go-dev)
-
 A [Go][] language development toolbox.
 
 Many [Drycc Workflow][] components use this Docker image as a standard build and test environment,
@@ -47,16 +45,11 @@ included tools or scripts. Here's an example of running `glide up` for drycc/bui
 $ docker run --rm \
   --volume $GOPATH/src/github.com/drycc/builder:/go/src/github.com/drycc/builder \
   --workdir /go/src/github.com/drycc/builder \
-  quay.io/drycc/go-dev:latest \
+  drycc/go-dev \
   glide up
 ```
 
 The latest drycc/go-dev Docker image is available at:
-
-* [Quay.io][]
-  ```
-  docker pull quay.io/drycc/go-dev
-  ```
 
 * [Docker Hub][]
   ```
@@ -87,7 +80,6 @@ The latest drycc/go-dev Docker image is available at:
 [k]: https://github.com/jakepearson/k
 [kubectl]: https://kubernetes.io/docs/user-guide/kubectl-overview/
 [pull requests]: https://github.com/drycc/docker-go-dev/pulls
-[Quay.io]: https://quay.io
 [Packer]: https://github.com/hashicorp/packer
 [ruby]: https://www.ruby-lang.org/
 [shellcheck]: https://github.com/koalaman/shellcheck
