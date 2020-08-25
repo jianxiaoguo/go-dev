@@ -14,9 +14,7 @@ ENV AZCLI_VERSION=2.9.1 \
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
-RUN \
-  sed -i -e 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
-  export DEBIAN_FRONTEND=noninteractive && \
+RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get upgrade -y --no-install-recommends && \
   apt-get install -y --no-install-recommends \
@@ -73,7 +71,6 @@ RUN \
     golang.org/x/lint \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
   && pip3 install --disable-pip-version-check --no-cache-dir \
-    -i https://mirrors.aliyun.com/pypi/simple/ \
     azure-cli==${AZCLI_VERSION} shyaml \
   && apt-get purge --auto-remove -y libffi-dev python3-dev python3-pip \
   && apt-get autoremove -y \
