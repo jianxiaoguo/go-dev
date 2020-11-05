@@ -64,7 +64,7 @@ The latest drycc/go-dev Docker image is available at:
 [Docker Hub]: https://hub.docker.com
 [Docker]: http://www.docker.com
 [gb]: https://github.com/constabulary/gb/
-[gen-changelog.sh]: https://github.com/drycc/docker-go-dev/tree/master/rootfs/usr/local/bin/gen-changelog.sh
+[gen-changelog.sh]: https://github.com/drycc/docker-go-dev/tree/main/rootfs/usr/local/bin/gen-changelog.sh
 [ginkgo]: https://github.com/onsi/ginkgo
 [glide]: https://github.com/Masterminds/glide
 [go-bindata]: https://github.com/jteeuwen/go-bindata
@@ -84,7 +84,7 @@ The latest drycc/go-dev Docker image is available at:
 [ruby]: https://www.ruby-lang.org/
 [shellcheck]: https://github.com/koalaman/shellcheck
 [shyaml]: https://github.com/0k/shyaml
-[test-cover.sh]: https://github.com/drycc/docker-go-dev/tree/master/rootfs/usr/local/bin/test-cover.sh
+[test-cover.sh]: https://github.com/drycc/docker-go-dev/tree/main/rootfs/usr/local/bin/test-cover.sh
 [Ubuntu 16.04]: https://hub.docker.com/_/ubuntu/
 [unzip]: https://linux.die.net/man/1/unzip
 [upx]: http://upx.sourceforge.net/
