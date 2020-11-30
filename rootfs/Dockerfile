@@ -2,6 +2,7 @@ FROM golang:1.15
 
 LABEL name="drycc-go-dev"
 
+ENV ENVTPL_VERSION=v1.0.0
 ENV GOLANGCI_LINT_VERSION=v1.29.0
 
 # This is a huge one-liner to optimize the Docker image layer.
@@ -48,6 +49,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     github.com/axw/gocov/gocov \
     github.com/mitchellh/gox \
     golang.org/x/lint \
+  && git clone --dept 1 -b $ENVTPL_VERSION https://github.com/subfuzion/envtpl $GOPATH/src/github.com/subfuzion/envtpl \
+  && cd $GOPATH/src/github.com/subfuzion/envtpl \
+  && export GO111MODULE=on \
+  && CGO_ENABLED=0 go build \
+        -ldflags "-X main.AppVersionMetadata=$(date -u +%s)" \
+        -a -installsuffix cgo -o /bin/envtpl ./cmd/envtpl/. \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
   && apt-get autoremove -y \
   && apt-get clean -y \
