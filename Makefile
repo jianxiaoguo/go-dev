@@ -2,6 +2,7 @@ VERSION ?= $(shell git describe --tags --exact-match 2>/dev/null || echo latest)
 REGISTRY ?= docker.io/
 IMAGE_PREFIX ?= drycc
 IMAGE := ${REGISTRY}${IMAGE_PREFIX}/go-dev:${VERSION}
+PLATFORM ?= linux/amd64,linux/arm64
 
 # scripts are checked *after* build, so use paths inside the container
 SHELL_SCRIPTS = /usr/local/bin/test-cover.sh
@@ -17,6 +18,9 @@ info:
 
 build:
 	docker build -t ${IMAGE} rootfs
+
+buildx:
+	docker buildx build --platform ${PLATFORM} -t ${IMAGE} rootfs --push
 
 push: build
 	docker push ${IMAGE}
