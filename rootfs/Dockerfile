@@ -1,4 +1,4 @@
-FROM golang:1.15
+FROM docker.io/library/golang:1.15
 
 LABEL name="drycc-go-dev"
 
