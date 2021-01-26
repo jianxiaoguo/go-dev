@@ -1,7 +1,7 @@
 VERSION ?= $(shell git describe --tags --exact-match 2>/dev/null || echo latest)
-REGISTRY ?= docker.io/
+REGISTRY ?= docker.io
 IMAGE_PREFIX ?= drycc
-IMAGE := ${REGISTRY}${IMAGE_PREFIX}/go-dev:${VERSION}
+IMAGE := ${DEV_REGISTRY}/${IMAGE_PREFIX}/go-dev:${VERSION}
 PLATFORM ?= linux/amd64,linux/arm64
 
 # scripts are checked *after* build, so use paths inside the container
