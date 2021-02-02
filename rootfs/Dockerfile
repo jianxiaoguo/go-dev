@@ -11,8 +11,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get update \
   && apt-get install -y lsb-release \
   && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
-  && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-  && echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
   && echo "deb https://download.docker.com/linux/debian $(lsb_release -cs) stable"  | tee -a /etc/apt/sources.list.d/docker.list \
   && apt-get update \
   && apt-get upgrade -y --no-install-recommends \
@@ -41,8 +39,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     zip \
     shellcheck \
     etcd \
-    kubectl \
     docker-ce-cli \
+  && curl -o /usr/local/bin/kubectl \
+    -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
+  && chmod +x /usr/local/bin/kubectl \
   && go env -w GO111MODULE=on \
   && go get -u -v \
     github.com/AlekSi/gocov-xml \
