@@ -8,13 +8,15 @@ ENV GOLANGCI_LINT_VERSION=v1.29.0
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
 RUN export DEBIAN_FRONTEND=noninteractive \
+  #  podman source list
+  && echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list \
+  && echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list \
+  && curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/Release.key | apt-key add - \
   && apt-get update \
-  && apt-get install -y lsb-release \
-  && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
-  && echo "deb https://download.docker.com/linux/debian $(lsb_release -cs) stable"  | tee -a /etc/apt/sources.list.d/docker.list \
-  && apt-get update \
+  && apt-get -y -t buster-backports install libseccomp2 \
   && apt-get upgrade -y --no-install-recommends \
   && apt-get install -y --no-install-recommends \
+    lsb-release \
     bash \
     build-essential \
     ca-certificates \
@@ -39,7 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     zip \
     shellcheck \
     etcd \
-    docker-ce-cli \
+    podman \
   && curl -o /usr/local/bin/kubectl \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
   && chmod +x /usr/local/bin/kubectl \
