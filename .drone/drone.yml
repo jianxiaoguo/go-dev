@@ -8,11 +8,9 @@ platform:
 
 steps:
 - name: test
-  image: docker.io/library/docker:dind
+  image: docker.io/drycc/go-dev
   privileged: true
   commands:
-  - nohup dockerd &
-  - apk add make bash curl
   - make test
   environment:
     DEV_REGISTRY:
@@ -23,11 +21,9 @@ steps:
       from_secret: docker_password
 
 - name: publish
-  image: docker.io/library/docker:dind
+  image: docker.io/drycc/go-dev
   privileged: true
   commands:
-  - nohup dockerd &
-  - apk add make bash curl
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
   - make build push
   environment:
@@ -54,22 +50,18 @@ platform:
 
 steps:
 - name: test
-  image: docker.io/library/docker:dind
+  image: docker.io/drycc/go-dev
   privileged: true
   commands:
-  - nohup dockerd &
-  - apk add make bash curl
   - make test
   environment:
     DEV_REGISTRY:
       from_secret: dev_registry
 
 - name: publish
-  image: docker.io/library/docker:dind
+  image: docker.io/drycc/go-dev
   privileged: true
   commands:
-  - nohup dockerd &
-  - apk add make bash curl
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
   - make build push
   environment:
@@ -119,3 +111,4 @@ steps:
 depends_on:
 - linux-amd64
 - linux-arm64
+

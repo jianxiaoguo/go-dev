@@ -1,3 +1,6 @@
 #!/bin/bash
-
-podman --storage-driver=vfs --events-backend=file $@
+if [ "$1" == "push" ]; then
+  podman --storage-driver=vfs --cgroup-manager=cgroupfs --events-backend=file "$@" --format=v2s2
+else
+  podman --storage-driver=vfs --cgroup-manager=cgroupfs --events-backend=file "$@"
+fi
