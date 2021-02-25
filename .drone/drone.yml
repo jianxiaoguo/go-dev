@@ -24,6 +24,9 @@ steps:
     - push
     - tag
     - pull_request
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
 
 - name: publish
   image: docker.io/drycc/go-dev
@@ -43,6 +46,14 @@ steps:
     event:
     - push
     - tag
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
+
+volumes:
+- name: image_registries
+  host:
+    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
@@ -67,6 +78,9 @@ steps:
     - push
     - tag
     - pull_request
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
 
 - name: publish
   image: docker.io/drycc/go-dev
@@ -86,6 +100,14 @@ steps:
     event:
     - push
     - tag
+  volumes:
+  - name: image_registries
+    path: /etc/containers/registries.conf
+
+volumes:
+- name: image_registries
+  host:
+    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
