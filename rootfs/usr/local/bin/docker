@@ -1,5 +1,6 @@
 #!/bin/bash
 
+shopt -s expand_aliases
 alias podman="podman --storage-driver=vfs --cgroup-manager=cgroupfs --events-backend=file"
 
 if [ "$1" == "push" ]; then
