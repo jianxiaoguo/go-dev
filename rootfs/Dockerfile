@@ -1,9 +1,9 @@
-FROM docker.io/library/golang:1.15
+FROM docker.io/library/golang:1.16
 
 LABEL name="drycc-go-dev"
 
 ENV ENVTPL_VERSION=v1.0.0
-ENV GOLANGCI_LINT_VERSION=v1.29.0
+ENV GOLANGCI_LINT_VERSION=v1.41.1
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
