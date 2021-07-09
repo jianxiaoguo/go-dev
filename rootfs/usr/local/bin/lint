@@ -11,7 +11,7 @@ golangci-lint --disable-all \
   -E=gosimple \
   -E=vet \
   -E=gofmt \
-  -E=golint \
+  -E=revive \
   --timeout=600s \
   run ./...
 

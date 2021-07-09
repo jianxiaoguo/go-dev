@@ -50,7 +50,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     github.com/AlekSi/gocov-xml \
     github.com/axw/gocov/gocov \
     github.com/mitchellh/gox \
-    golang.org/x/lint \
+    github.com/mgechev/revive \
   && git clone --dept 1 -b $ENVTPL_VERSION https://github.com/subfuzion/envtpl $GOPATH/src/github.com/subfuzion/envtpl \
   && cd $GOPATH/src/github.com/subfuzion/envtpl \
   && export GO111MODULE=on \
