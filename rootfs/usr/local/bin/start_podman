@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -eo pipefail
+shopt -s expand_aliases
+alias podman="podman --storage-driver=vfs --cgroup-manager=cgroupfs --events-backend=file"
+
+function clean_before_exit {
+    # delay before exiting, so stdout/stderr flushes through the logging system
+    pkill -15 caddy
+    pkill -15 podman
+    sleep 3
+}
+trap clean_before_exit EXIT
+
+function waiting_podman {
+    echo "---> Waiting podman system service"
+    for i in {0..3}; do
+        pid=$(pgrep podman)
+        if [ ! -n "$pid" ]; then
+            sleep 3
+        elif [ ! -n "$pid" ] && [[ $i == 3 ]]; then
+            echo "---> Podman system service failed to start"
+            exit 1
+        else
+            sleep 1
+            break
+        fi
+    done
+}
+
+# Start podman service
+export DOCKER_HOST="unix:///var/run/podman.sock"
+
+log_level="error"
+if [[ "${DRYCC_DEBUG}" ]]; then
+    log_level="debug"
+    unset DRYCC_DEBUG
+fi
+
+podman system service \
+    --log-level "${log_level}" \
+    --time 0 "${DOCKER_HOST}" &
+
+waiting_podman
+ln /var/run/podman.sock /var/run/docker.sock
