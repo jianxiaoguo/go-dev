@@ -57,6 +57,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && CGO_ENABLED=0 go build \
         -ldflags "-X main.AppVersionMetadata=$(date -u +%s)" \
         -a -installsuffix cgo -o /bin/envtpl ./cmd/envtpl/. \
+  && git clone --dept 1 https://github.com/buildpacks/pack -b v0.19.0 /tmp/pack \
+  && cd /tmp/pack \
+  && make \
+  && cp /tmp/pack/out/pack /usr/local/bin \
+  && chmod +x /usr/local/bin/pack \
+  && rm -rf /tmp/pack \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
   && apt-get autoremove -y \
   && apt-get clean -y \
