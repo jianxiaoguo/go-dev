@@ -15,6 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get update \
   && apt-get -y -t buster-backports install libseccomp2 \
   && apt-get install -y podman \
+  && sed -i "s|#mount_program = \"/usr/bin/fuse-overlayfs\"|mount_program = \"/usr/bin/fuse-overlayfs\"|g" /etc/containers/storage.conf \
   && apt-get upgrade -y --no-install-recommends \
   && apt-get install -y --no-install-recommends \
     lsb-release \
