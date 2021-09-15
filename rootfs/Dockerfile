@@ -1,22 +1,14 @@
-FROM docker.io/library/golang:1.16
+FROM docker.io/library/golang:1.17
 
 LABEL name="drycc-go-dev"
 
 ENV ENVTPL_VERSION=v1.0.0
-ENV GOLANGCI_LINT_VERSION=v1.41.1
+ENV GOLANGCI_LINT_VERSION=v1.42.1
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
 RUN export DEBIAN_FRONTEND=noninteractive \
-  #  podman source list
-  && echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list \
-  && echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list \
-  && curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/Release.key | apt-key add - \
-  && apt-get update \
-  && apt-get -y -t buster-backports install libseccomp2 \
-  && apt-get install -y podman \
-  && sed -i "s|#mount_program = \"/usr/bin/fuse-overlayfs\"|mount_program = \"/usr/bin/fuse-overlayfs\"|g" /etc/containers/storage.conf \
-  && apt-get upgrade -y --no-install-recommends \
+  && apt-get update -y --no-install-recommends \
   && apt-get install -y --no-install-recommends \
     lsb-release \
     bash \
@@ -43,6 +35,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     zip \
     shellcheck \
     etcd \
+    podman \
+    fuse-overlayfs \
   && curl -o /usr/local/bin/kubectl \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
   && chmod +x /usr/local/bin/kubectl \
@@ -65,6 +59,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && chmod +x /usr/local/bin/pack \
   && rm -rf /tmp/pack \
   && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
+  && bash -c "mkdir -p /var/lib/shared/{overlay-images,overlay-layers}" \
+  && bash -c "touch /var/lib/shared/{overlay-images/images.lock,overlay-layers/layers.lock}" \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man /usr/share/doc
