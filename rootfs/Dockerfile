@@ -52,7 +52,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && CGO_ENABLED=0 go build \
         -ldflags "-X main.AppVersionMetadata=$(date -u +%s)" \
         -a -installsuffix cgo -o /bin/envtpl ./cmd/envtpl/. \
-  && git clone --dept 1 https://github.com/buildpacks/pack -b v0.21.0 /tmp/pack \
+  && git clone --dept 1 https://github.com/buildpacks/pack -b v0.23.0 /tmp/pack \
   && cd /tmp/pack \
   && make \
   && cp /tmp/pack/out/pack /usr/local/bin \
