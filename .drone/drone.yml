@@ -32,8 +32,9 @@ steps:
   image: docker.io/drycc/go-dev
   privileged: true
   commands:
+  - make build
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-  - make build push
+  - make push
   environment:
     VERSION: ${DRONE_TAG:-latest}-linux-amd64
     DEV_REGISTRY:
@@ -86,8 +87,9 @@ steps:
   image: docker.io/drycc/go-dev
   privileged: true
   commands:
+  - make build
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-  - make build push
+  - make push
   environment:
     VERSION: ${DRONE_TAG:-latest}-linux-arm64
     DEV_REGISTRY:
