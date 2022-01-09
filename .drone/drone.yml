@@ -1,5 +1,5 @@
 kind: pipeline
-type: docker
+type: exec
 name: linux-amd64
 
 platform:
@@ -8,8 +8,6 @@ platform:
 
 steps:
 - name: test
-  image: docker.io/drycc/go-dev
-  privileged: true
   commands:
   - make test
   environment:
@@ -24,13 +22,8 @@ steps:
     - push
     - tag
     - pull_request
-  volumes:
-  - name: image_registries
-    path: /etc/containers/registries.conf
 
 - name: publish
-  image: docker.io/drycc/go-dev
-  privileged: true
   commands:
   - make build
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
@@ -47,18 +40,10 @@ steps:
     event:
     - push
     - tag
-  volumes:
-  - name: image_registries
-    path: /etc/containers/registries.conf
-
-volumes:
-- name: image_registries
-  host:
-    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
-type: docker
+type: exec
 name: linux-arm64
 
 platform:
@@ -67,8 +52,6 @@ platform:
 
 steps:
 - name: test
-  image: docker.io/drycc/go-dev
-  privileged: true
   commands:
   - make test
   environment:
@@ -79,13 +62,8 @@ steps:
     - push
     - tag
     - pull_request
-  volumes:
-  - name: image_registries
-    path: /etc/containers/registries.conf
 
 - name: publish
-  image: docker.io/drycc/go-dev
-  privileged: true
   commands:
   - make build
   - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
@@ -102,14 +80,6 @@ steps:
     event:
     - push
     - tag
-  volumes:
-  - name: image_registries
-    path: /etc/containers/registries.conf
-
-volumes:
-- name: image_registries
-  host:
-    path: /etc/containers/registries.conf
 
 ---
 kind: pipeline
@@ -124,10 +94,6 @@ steps:
   environment:
     DRYCC_REGISTRY:
       from_secret: drycc_registry
-  when:
-    event:
-      - push
-      - tag
 
 - name: publish
   image: plugins/manifest
@@ -140,10 +106,11 @@ steps:
   environment:
     DEV_REGISTRY:
       from_secret: dev_registry
-  when:
-    event:
-    - push
-    - tag
+
+trigger:
+  event:
+  - push
+  - tag
 
 depends_on:
 - linux-amd64
