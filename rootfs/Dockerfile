@@ -1,15 +1,14 @@
-FROM docker.io/library/golang:1.17
+FROM docker.io/drycc/base:bullseye
 
 LABEL name="drycc-go-dev"
 
-ENV ENVTPL_VERSION=v1.0.0
-ENV GOLANGCI_LINT_VERSION=v1.42.1
+ENV GO_VERSION=1.17.7
+ENV GOLANGCI_LINT_VERSION=v1.44.2
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
 RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update -y --no-install-recommends \
-  && apt-get install -y --no-install-recommends \
+  && install-packages \
     lsb-release \
     bash \
     build-essential \
@@ -35,6 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     zip \
     shellcheck \
     etcd \
+  && install-stack go $GO_VERSION && . init-stack \
   && curl -o /usr/local/bin/kubectl \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
   && chmod +x /usr/local/bin/kubectl \
@@ -44,25 +44,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     github.com/axw/gocov/gocov \
     github.com/mitchellh/gox \
     github.com/mgechev/revive \
-  && git clone --dept 1 -b $ENVTPL_VERSION https://github.com/subfuzion/envtpl $GOPATH/src/github.com/subfuzion/envtpl \
-  && cd $GOPATH/src/github.com/subfuzion/envtpl \
-  && export GO111MODULE=on \
-  && CGO_ENABLED=0 go build \
-        -ldflags "-X main.AppVersionMetadata=$(date -u +%s)" \
-        -a -installsuffix cgo -o /bin/envtpl ./cmd/envtpl/. \
-  && git clone --dept 1 https://github.com/buildpacks/pack -b v0.23.0 /tmp/pack \
-  && cd /tmp/pack \
-  && make \
-  && cp /tmp/pack/out/pack /usr/local/bin \
-  && chmod +x /usr/local/bin/pack \
-  && rm -rf /tmp/pack \
-  && curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $GOPATH/bin $GOLANGCI_LINT_VERSION \
-  && bash -c "mkdir -p /var/lib/shared/{overlay-images,overlay-layers}" \
-  && bash -c "touch /var/lib/shared/{overlay-images/images.lock,overlay-layers/layers.lock}" \
+  && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION \
+  && mkdir -p /var/lib/shared/{overlay-images,overlay-layers} \
+  && touch /var/lib/shared/{overlay-images/images.lock,overlay-layers/layers.lock} \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/man /usr/share/doc
 
-WORKDIR /go
+WORKDIR /opt/drycc/go
 
 COPY . /
