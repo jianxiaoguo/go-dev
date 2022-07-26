@@ -2,8 +2,8 @@ FROM registry.drycc.cc/drycc/base:bullseye
 
 LABEL name="drycc-go-dev"
 
-ENV GO_VERSION=1.17.7
-ENV GOLANGCI_LINT_VERSION=v1.44.2
+ENV GO_VERSION=1.18.4
+ENV GOLANGCI_LINT_VERSION=v1.47.2
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
@@ -39,11 +39,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
   && chmod +x /usr/local/bin/kubectl \
   && go env -w GO111MODULE=on \
-  && go get -u -v \
-    github.com/AlekSi/gocov-xml \
-    github.com/axw/gocov/gocov \
-    github.com/mitchellh/gox \
-    github.com/mgechev/revive \
+  && go install github.com/AlekSi/gocov-xml@latest \
+  && go install github.com/axw/gocov/gocov@latest \
+  && go install github.com/mitchellh/gox@latest \
+  && go install github.com/mgechev/revive@latest \
   && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION \
   && mkdir -p /var/lib/shared/{overlay-images,overlay-layers} \
   && touch /var/lib/shared/{overlay-images/images.lock,overlay-layers/layers.lock} \
