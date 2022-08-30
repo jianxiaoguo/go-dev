@@ -2,8 +2,8 @@ FROM registry.drycc.cc/drycc/base:bullseye
 
 LABEL name="drycc-go-dev"
 
-ENV GO_VERSION=1.18.4
-ENV GOLANGCI_LINT_VERSION=v1.47.2
+ENV GO_VERSION=1.19
+ENV GOLANGCI_LINT_VERSION=v1.49.0
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
