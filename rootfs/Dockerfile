@@ -1,9 +1,9 @@
-FROM registry.drycc.cc/drycc/base:bullseye
+FROM registry.drycc.cc/drycc/base:bookworm
 
 LABEL name="drycc-go-dev"
 
-ENV GO_VERSION=1.20.4
-ENV GOLANGCI_LINT_VERSION=v1.53.0
+ENV GO_VERSION=1.20
+ENV GOLANGCI_LINT_VERSION=v1.53.3
 
 # This is a huge one-liner to optimize the Docker image layer.
 # We disable source repos to speed up apt-get update.
@@ -14,26 +14,31 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     build-essential \
     ca-certificates \
     curl \
-    git-core \
+    git \
     jq \
     libffi-dev \
     libssl-dev \
-    man \
+    man-db \
     mercurial \
     net-tools \
-    netcat \
+    netcat-openbsd \
     openssh-client \
     procps \
     rsync \
     ruby \
     unzip \
-    upx \
     util-linux \
     vim \
     wget \
     zip \
     shellcheck \
-    etcd \
+    etcd-server \
+  && UPX_VERSION=4.0.2 \
+  && OS_ARCH=$(dpkg --print-architecture) \
+  && wget https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-${OS_ARCH}_linux.tar.xz \
+  && tar -Jxvf upx-${UPX_VERSION}-${OS_ARCH}_linux.tar.xz \
+  && cp upx-${UPX_VERSION}-${OS_ARCH}_linux/upx /usr/local/bin \
+  && rm -rf upx-${UPX_VERSION}-${OS_ARCH}_linux* \
   && install-stack go $GO_VERSION && . init-stack \
   && curl -o /usr/local/bin/kubectl \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
