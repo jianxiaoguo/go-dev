@@ -6,7 +6,7 @@ LABEL name="drycc-go-dev"
 ENV GO_VERSION=1.20
 ENV GOLANGCI_LINT_VERSION=v1.53.3
 
-# This is a huge one-liner to optimize the Docker image layer.
+# This is a huge one-liner to optimize the Container image layer.
 # We disable source repos to speed up apt-get update.
 RUN export DEBIAN_FRONTEND=noninteractive \
   && install-packages \

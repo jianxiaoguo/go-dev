@@ -2,18 +2,16 @@
 
 A [Go][] language development toolbox.
 
-Many [Drycc Workflow][] components use this Docker image as a standard build and test environment,
+Many [Drycc Workflow][] components use this Container image as a standard build and test environment,
 but it is intended to be useful to any Go developer. Please help make drycc/go-dev better by
 creating [issues][] and submitting [pull requests][].
 
 ## Image Contents
 
-* based on [Ubuntu 16.04][]
 * [az][]: Azure cloud command-line tool
 * [azcopy][]: Utility for copying data to/from Microsoft Azure Blob and File storage
 * [dep][]: Go dependency management tool
 * [delve][]: debugger for the Go programming language
-* [Docker][]: Docker binaries to be able to bind mount /var/run/docker.sock in the dev environment container
 * [gb][]: project-based build tool for Go
 * [ginkgo][]: BDD testing framework for Go
 * [glide][]: Go dependency management tool
@@ -39,21 +37,21 @@ creating [issues][] and submitting [pull requests][].
 ## Usage
 
 Mount your local Go code into a container's `$GOPATH` to run any `go` command or one of the
-included tools or scripts. Here's an example of running `glide up` for drycc/builder:
+included tools or scripts. Here's an example of running `go build` for drycc/builder:
 
 ```console
-$ docker run --rm \
+$ podman run --rm \
   --volume $GOPATH/src/github.com/drycc/builder:/go/src/github.com/drycc/builder \
   --workdir /go/src/github.com/drycc/builder \
-  drycc/go-dev \
-  glide up
+  registry.drycc.cc/drycc/go-dev \
+  go build
 ```
 
-The latest drycc/go-dev Docker image is available at:
+The latest registry.drycc.cc/drycc/go-dev Container image is available at:
 
-* [Docker Hub][]
+* [Drycc Registry][]
   ```
-  docker pull drycc/go-dev
+  podman pull registry.drycc.cc/drycc/go-dev
   ```
 
 [az]: https://github.com/Azure/azure-cli#readme
@@ -61,10 +59,8 @@ The latest drycc/go-dev Docker image is available at:
 [Drycc Workflow]: https://drycc.com/
 [delve]: https://github.com/derekparker/delve
 [dep]: https://github.com/golang/dep
-[Docker Hub]: https://hub.docker.com
-[Docker]: http://www.docker.com
 [gb]: https://github.com/constabulary/gb/
-[gen-changelog.sh]: https://github.com/drycc/docker-go-dev/tree/main/rootfs/usr/local/bin/gen-changelog.sh
+[gen-changelog.sh]: https://github.com/drycc/go-dev/tree/main/rootfs/usr/local/bin/gen-changelog.sh
 [ginkgo]: https://github.com/onsi/ginkgo
 [glide]: https://github.com/Masterminds/glide
 [go-bindata]: https://github.com/jteeuwen/go-bindata
@@ -74,18 +70,17 @@ The latest drycc/go-dev Docker image is available at:
 [golangci-lint]: https://github.com/golangci/golangci-lint
 [gox]: https://github.com/mitchellh/gox
 [helm]: https://github.com/kubernetes/helm
-[issues]: https://github.com/drycc/docker-go-dev/issues
+[issues]: https://github.com/drycc/go-dev/issues
 [jq]: https://stedolan.github.io/jq/
 [jwt]: https://github.com/dgrijalva/jwt-go
 [k]: https://github.com/jakepearson/k
 [kubectl]: https://kubernetes.io/docs/user-guide/kubectl-overview/
-[pull requests]: https://github.com/drycc/docker-go-dev/pulls
+[pull requests]: https://github.com/drycc/go-dev/pulls
 [Packer]: https://github.com/hashicorp/packer
 [ruby]: https://www.ruby-lang.org/
 [shellcheck]: https://github.com/koalaman/shellcheck
 [shyaml]: https://github.com/0k/shyaml
-[test-cover.sh]: https://github.com/drycc/docker-go-dev/tree/main/rootfs/usr/local/bin/test-cover.sh
-[Ubuntu 16.04]: https://hub.docker.com/_/ubuntu/
+[test-cover.sh]: https://github.com/drycc/go-dev/tree/main/rootfs/usr/local/bin/test-cover.sh
 [unzip]: https://linux.die.net/man/1/unzip
 [upx]: http://upx.sourceforge.net/
 [vim]: http://www.vim.org/
