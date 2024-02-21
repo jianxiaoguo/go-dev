@@ -3,8 +3,8 @@ FROM registry.drycc.cc/drycc/base:${CODENAME}
 
 LABEL name="drycc-go-dev"
 
-ENV GO_VERSION=1.20
-ENV GOLANGCI_LINT_VERSION=v1.53.3
+ENV GO_VERSION=1.22
+ENV GOLANGCI_LINT_VERSION=v1.56.2
 
 # This is a huge one-liner to optimize the Container image layer.
 # We disable source repos to speed up apt-get update.
