@@ -44,6 +44,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && curl -o /usr/local/bin/kubectl \
     -L "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(dpkg --print-architecture)/kubectl" \
   && chmod +x /usr/local/bin/kubectl \
+  && curl -SL https://cli.codecov.io/latest/$([ $(dpkg --print-architecture) == "arm64" ] && echo linux-arm64 || echo linux)/codecov -o /usr/local/bin/codecov \
+  && chmod +x /usr/local/bin/codecov \
   && go env -w GO111MODULE=on \
   && go install github.com/AlekSi/gocov-xml@latest \
   && go install github.com/axw/gocov/gocov@latest \
