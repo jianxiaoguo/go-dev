@@ -3,8 +3,8 @@ FROM registry.drycc.cc/drycc/base:${CODENAME}
 
 LABEL name="drycc-go-dev"
 
-ENV GO_VERSION=1.22
-ENV GOLANGCI_LINT_VERSION=v1.56.2
+ENV GO_VERSION=1.23
+ENV GOLANGCI_LINT_VERSION=v1.61.0
 
 # This is a huge one-liner to optimize the Container image layer.
 # We disable source repos to speed up apt-get update.
@@ -34,7 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     zip \
     shellcheck \
     etcd-server \
-  && UPX_VERSION=4.0.2 \
+  && UPX_VERSION=4.2.4 \
   && OS_ARCH=$(dpkg --print-architecture) \
   && wget https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-${OS_ARCH}_linux.tar.xz \
   && tar -Jxvf upx-${UPX_VERSION}-${OS_ARCH}_linux.tar.xz \
