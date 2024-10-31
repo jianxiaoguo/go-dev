@@ -9,7 +9,7 @@ golangci-lint --disable-all \
   -E=unused \
   -E=ineffassign \
   -E=gosimple \
-  -E=vet \
+  -E=govet \
   -E=gofmt \
   -E=revive \
   --timeout=600s \
