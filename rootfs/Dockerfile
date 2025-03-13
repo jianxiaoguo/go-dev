@@ -16,6 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     ca-certificates \
     curl \
     git \
+    gettext \
     jq \
     libffi-dev \
     libssl-dev \
