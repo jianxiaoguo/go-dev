@@ -48,9 +48,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && curl -SL https://cli.codecov.io/latest/$([ $(dpkg --print-architecture) == "arm64" ] && echo linux-arm64 || echo linux)/codecov -o /usr/local/bin/codecov \
   && chmod +x /usr/local/bin/codecov \
   && go env -w GO111MODULE=on \
-  && go install github.com/AlekSi/gocov-xml@latest \
-  && go install github.com/axw/gocov/gocov@latest \
-  && go install github.com/mitchellh/gox@latest \
   && go install github.com/mgechev/revive@latest \
   && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION \
   && mkdir -p /var/lib/shared/{overlay-images,overlay-layers} \
