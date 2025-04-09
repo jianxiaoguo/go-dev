@@ -49,6 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && chmod +x /usr/local/bin/codecov \
   && go env -w GO111MODULE=on \
   && go install github.com/mgechev/revive@latest \
+  && go install github.com/gosexy/gettext/go-xgettext@latest \
   && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $GOLANGCI_LINT_VERSION \
   && mkdir -p /var/lib/shared/{overlay-images,overlay-layers} \
   && touch /var/lib/shared/{overlay-images/images.lock,overlay-layers/layers.lock} \
